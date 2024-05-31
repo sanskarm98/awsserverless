@@ -7,19 +7,15 @@ import (
 	"github.com/aws/aws-lambda-go/lambda"
 )
 
-type Response struct {
-	Message string `json:"message"`
-}
-
 func routeRequest(ctx context.Context, request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
-	switch request.Resource {
-	case "/create":
+	switch request.HTTPMethod {
+	case "POST":
 		return CreateHandler(ctx, request)
-	case "/read":
+	case "GET":
 		return ReadHandler(ctx, request)
-	case "/update":
+	case "PUT":
 		return UpdateHandler(ctx, request)
-	case "/delete":
+	case "DELETE":
 		return DeleteHandler(ctx, request)
 	default:
 		return events.APIGatewayProxyResponse{StatusCode: 404, Body: "Not Found"}, nil
